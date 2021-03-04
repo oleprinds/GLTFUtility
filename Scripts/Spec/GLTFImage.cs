@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -39,6 +39,7 @@ namespace Siccity.GLTFUtility {
 					// Load textures from asset database if we can
 					Texture2D assetTexture = UnityEditor.AssetDatabase.LoadAssetAtPath(path, typeof(Texture2D)) as Texture2D;
 					if (assetTexture != null) {
+					   assetTexture.anisoLevel = 7;
 						onFinish(assetTexture);
 						if (onProgress != null) onProgress(1f);
 						yield break;
@@ -66,6 +67,7 @@ namespace Siccity.GLTFUtility {
 						} else {
 							Texture2D tex = DownloadHandlerTexture.GetContent(uwr);
 							tex.name = Path.GetFileNameWithoutExtension(path);
+							tex.anisoLevel = 8;
 							onFinish(tex);
 						}
 						uwr.Dispose();
@@ -75,7 +77,10 @@ namespace Siccity.GLTFUtility {
 					if (!tex.LoadImage(bytes)) {
 						Debug.Log("mimeType not supported");
 						yield break;
-					} else onFinish(tex);
+					} else {
+					   tex.anisoLevel = 9;
+					   onFinish(tex);
+					}
 				}
 			}
 		}
